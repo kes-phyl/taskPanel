@@ -4,15 +4,12 @@
         <h1><%=kindOfDay%></h1>
     </div>
    <div class="box">
-            <%for(i = 0; i < newActivity.length; i++){%>
-                <div class="item">
-                    <input type="checkbox">
-               <p><%=newActivity[i]%></p>
-                </div>
-                
-           <% }%>
-   
-
+   <% newActivity.forEach(function(task){%>
+        <div class="item">
+            <input type="checkbox">
+       <p><%=task.name%></p>
+        </div>
+   <% })%>
     <form class="item" action="/" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
         <button type="submit" name="lists" value="<%-kindOfDay%>">+</button>
