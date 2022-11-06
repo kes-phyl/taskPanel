@@ -79,13 +79,14 @@ app.get('/', function(req, res){
         console.log(err)
     }else{
         console.log('saved sucessfully');
+       res.redirect('/')
+    }
+});
+    }else{
         res.render('lists', {kindOfDay: day, newActivity: foundTasks})
 
     }
-});
-    }
     
-            res.render('lists', {kindOfDay: day, newActivity: foundTasks})
    })
  })
 
@@ -95,17 +96,27 @@ app.get('/', function(req, res){
 //creating a post route
 
 app.post('/', function(req, res){
-    console.log(req.body)
-    const items = req.body.newItem;
-    if(req.body.lists === 'Thursday'){
-        newWorkActivity.push(items) 
-        res.redirect('/work');
-    }else{
-        newItems.push(items) 
-        res.redirect('/');
-    }
+  const taskItem = req.body.newItem;
+
+  const task = new Task({
+    name: taskItem
+  })
+
+  task.save();
+  res.redirect('/');
    
-   
+})
+
+app.post('/delete', function(req, res){
+    const eraseId = req.body.checkbox;
+    Task.findByIdAndRemove(eraseId, function(err){
+        if (err){
+            console.log(err)
+        }else{
+            console.log('sucessfully deleted');
+            res.redirect('/')
+        }
+    })
 })
 
 

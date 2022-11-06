@@ -5,10 +5,12 @@
     </div>
    <div class="box">
    <% newActivity.forEach(function(task){%>
+    <form action="/delete" method="post">
         <div class="item">
-            <input type="checkbox">
+            <input type="checkbox" value="<%=task.id%>" name="checkbox" onchange="this.form.submit()">
        <p><%=task.name%></p>
         </div>
+    </form>
    <% })%>
     <form class="item" action="/" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
