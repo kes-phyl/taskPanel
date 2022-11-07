@@ -10,6 +10,7 @@
             <input type="checkbox" value="<%=task.id%>" name="checkbox" onchange="this.form.submit()">
        <p><%=task.item%></p>
         </div>
+        <input type="hidden" value="<%=kindOfDay%>" name="listName">
     </form>
    <% })%>
     <form class="item" action="/" method="post">

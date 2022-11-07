@@ -106,20 +106,20 @@ app.get('/', function(req, res){
 
 app.post('/', function(req, res){
   const taskItem = req.body.newItem;
-  const listName = req.body.lists;
+  const listTitle = req.body.lists;
 
   const task = new Task({
     item: taskItem
   })
 
-  if(listName === 'Today'){
+  if(listTitle === 'Today'){
      task.save();
      res.redirect('/');
    }else{
-    List.findOne({name: listName}, function(err, foundLists){
+    List.findOne({name: listTitle}, function(err, foundLists){
         foundLists.item.push(task);
         foundLists.save();
-        res.redirect('/' + listName)
+        res.redirect('/' + listTitle)
     })
    }
 
@@ -129,14 +129,25 @@ app.post('/', function(req, res){
 
 app.post('/delete', function(req, res){
     const eraseId = req.body.checkbox;
-    Task.findByIdAndRemove(eraseId, function(err){
-        if (err){
-            console.log(err)
-        }else{
-            console.log('sucessfully deleted');
-            res.redirect('/')
-        }
-    })
+    const listName = req.body.listName;
+
+    if(listName === 'Today'){
+        Task.findByIdAndRemove(eraseId, function(err){
+            if (err){
+                console.log(err)
+            }else{
+                console.log('sucessfully deleted');
+                res.redirect('/')
+            }
+        })
+    }else{
+        List.findOneAndUpdate({name: listName}, {$pull: {item: {_id: eraseId}}}, function(err, foundList){
+            if(!err){
+                res.redirect('/' + listName);
+            }
+        })
+    }
+  
 })
 
 
