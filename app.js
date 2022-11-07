@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const date = require(__dirname + '/date.js')
 const newWorkActivity = ['learn coding'];
 const mongoose = require('mongoose')
 
@@ -9,7 +8,9 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.set('view engine', 'ejs')
 app.use(express.static('public'));
 
+//constant title
 
+const day = 'Today';
 
 
 //connecting to the database... 
@@ -34,27 +35,37 @@ mongoose.connect(
 
 
 const taskSchema = {
-    name: String
+    item: String
 }
 
 const Task = mongoose.model('task', taskSchema);
 
 
+
+//creating a new database schema and model for every dynamic list 
+
+const listSchema = {
+    name: String,
+    item: [taskSchema]
+}
+
+const List = mongoose.model('list', listSchema);
+
+
+
+
+
+//default items added to the database......
+
 const firstTask = new Task({
-    name: 'Welcome to the task app'
+    item: 'Welcome to the task app'
 })
-// firstTask.save(function(err){
-//     if(err){
-//         console.log(err)
-//     }else{
-//         console.log('succesffully added..')
-//     }
-// })
+
 const secondTask = new Task({
-    name: 'Hit the + button to add a new task.'
+    item: 'Hit the + button to add a new task.'
 })
 const thirdTask = new Task({
-    name: '<--- Hit this to delete an item'
+    item: '<--- Hit this to delete an item'
 })
 
 const newTasks = [firstTask, secondTask, thirdTask];
@@ -69,8 +80,6 @@ const newTasks = [firstTask, secondTask, thirdTask];
 
 
 app.get('/', function(req, res){
-
-    const day = date.getDate();
     Task.find({}, function(err, foundTasks){
     if(foundTasks.length === 0 ){
         Task.insertMany(newTasks, function(err){
@@ -78,7 +87,7 @@ app.get('/', function(req, res){
     if(err){
         console.log(err)
     }else{
-        console.log('saved sucessfully');
+        console.log('saved sucessfully')
        res.redirect('/')
     }
 });
@@ -99,7 +108,7 @@ app.post('/', function(req, res){
   const taskItem = req.body.newItem;
 
   const task = new Task({
-    name: taskItem
+    item: taskItem
   })
 
   task.save();
@@ -120,10 +129,26 @@ app.post('/delete', function(req, res){
 })
 
 
-app.get('/work', function(req, res){
-    
-    const day = date.getDay();
-    res.render('lists', {kindOfDay: day, newActivity: newWorkActivity })
+//dynamic route for custom list.......
+
+app.get('/:customListName', function(req, res){
+    const customListName = req.params.customListName;
+
+    List.findOne({name: customListName}, function(err, foundList){
+        if(!err){
+            if(!foundList){
+                const list = new List({
+                name: customListName,
+                item: newTasks
+            })
+            list.save();
+            res.redirect('/'+ customListName)
+            }else{
+                res.render('lists', {kindOfDay: foundList.name, newActivity: foundList.item})
+            }
+        }
+        
+    })
 })
 
 
