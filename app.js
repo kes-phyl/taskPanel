@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const newWorkActivity = ['learn coding'];
 const mongoose = require('mongoose')
+const _ = require('lodash');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}))
@@ -154,7 +154,8 @@ app.post('/delete', function(req, res){
 //dynamic route for custom list.......
 
 app.get('/:customListName', function(req, res){
-    const customListName = req.params.customListName;
+    const customListName = _.capitalize(req.params.customListName);
+   
 
     List.findOne({name: customListName}, function(err, foundList){
         if(!err){
