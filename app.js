@@ -102,18 +102,29 @@ app.get('/', function(req, res){
 
 
 
-//creating a post route
+//creating a post route, that catches the input of the form and add item to the desired database
 
 app.post('/', function(req, res){
   const taskItem = req.body.newItem;
+  const listName = req.body.lists;
 
   const task = new Task({
     item: taskItem
   })
 
-  task.save();
-  res.redirect('/');
-   
+  if(listName === 'Today'){
+     task.save();
+     res.redirect('/');
+   }else{
+    List.findOne({name: listName}, function(err, foundLists){
+        foundLists.item.push(task);
+        foundLists.save();
+        res.redirect('/' + listName)
+    })
+   }
+
+
+  
 })
 
 app.post('/delete', function(req, res){
