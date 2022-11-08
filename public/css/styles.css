@@ -1,12 +1,12 @@
 html {
   background-color: #E4E9FD;
-  background-image: -webkit-linear-gradient(65deg, #A683E3 50%, #E4E9FD 50%);
+  background-image: -webkit-linear-gradient(65deg, #bdc3c7 50%, #2c3e50 50%);
   min-height: 1000px;
   font-family: 'helvetica neue';
 }
 
 h1 {
-  color: #fff;
+  color: #2c3e50;
   padding: 10px;
 }
 
@@ -19,7 +19,7 @@ h1 {
 }
 
 #heading {
-  background-color: #A683E3;
+  background-color: #bdc3c7;
   text-align: center;
 }
 
@@ -61,7 +61,7 @@ button {
   width: 50px;
   border-radius: 50%;
   border-color: transparent;
-  background-color: #A683E3;
+  background-color: #2c3e50 ;
   color: #fff;
   font-size: 30px;
   padding-bottom: 6px;
