@@ -16,7 +16,7 @@ const day = 'Today';
 //connecting to the database... 
 
 mongoose.connect(
-    'mongodb+srv://admin-phylbert:<password>@cluster0.uvhdaky.mongodb.net/tasksDB'
+    'mongodb+srv://admin-phylbert:Test123@cluster0.uvhdaky.mongodb.net/tasksDB'
   )
   .then(()=>console.log('connected'))
   .catch(e=>console.log(e));
