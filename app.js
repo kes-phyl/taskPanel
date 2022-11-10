@@ -16,14 +16,10 @@ const day = 'Today';
 //connecting to the database... 
 
 mongoose.connect(
-    'mongodb://127.0.0.1:27017/tasksDB'
+    'mongodb+srv://admin-phylbert:<password>@cluster0.uvhdaky.mongodb.net/tasksDB'
   )
   .then(()=>console.log('connected'))
   .catch(e=>console.log(e));
-
-////////////////////////////////////////////Try reconnecting to a local database.. and see if the delete option will still work for local database'
-////////then figure out how to view git local repository and try remove one of the said repository create a new 
-// heroku app initializing new repository and pushing all the commited git log to the current directory including the newly git ignored files 
 // const connectDB = async ()=>{
 //     try{
 //         await mongoose.connect('mongodb://localhost:27017/tasksDB');
@@ -176,7 +172,7 @@ app.get('/:customListName', function(req, res){
     })
 })
 
-// process.env.PORT ||
-app.listen(3000, function(){
+
+app.listen(process.env.PORT ||3000, function(){
     console.log('listening on port 3000')
 })
